@@ -9,7 +9,8 @@ const TeamLogo = ({ team }) => {
           resizeMode="cover"
           style={styles.image}
           source={{
-            uri: "https://media.api-football.com/teams/" + team.team_id + ".png"
+            uri:
+              "https://media.api-football.com/teams/" + team.team_id + ".png",
           }}
         ></Image>
       </View>
@@ -21,12 +22,12 @@ const TeamLogo = ({ team }) => {
 const styles = StyleSheet.create({
   imageContainer: {
     width: 200,
-    height: 200
+    height: 200,
   },
   image: {
-    flex: 1
+    flex: 1,
   },
-  container: { alignItems: "center" }
+  container: { alignItems: "center" },
 });
 
 export default TeamLogo;

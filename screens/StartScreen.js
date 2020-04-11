@@ -4,8 +4,9 @@ import Chooser from "./Chooser";
 import { StyleSheet, View } from "react-native";
 import getCountries from "../service/api";
 
-const startScreen = props => {
+const startScreen = (props) => {
   const [chosenTeam, setchosenTeam] = useState({});
+
   const cleanUp = () => {
     AsyncStorage.clear();
     setchosenTeam({});
@@ -13,16 +14,26 @@ const startScreen = props => {
     console.log("cleanup");
   };
   useEffect(() => {
+    console.log("This effect is running boiiii");
+    if (props.route.params?.toCleanUp) {
+      console.log("This bad boi is true and exists");
+      console.log(props.route.params.toCleanUp);
+      cleanUp();
+    }
+  }, [props.route.params?.toCleanUp]);
+  useEffect(() => {
     const fetchChosenTeam = async () => {
       try {
-        await AsyncStorage.getItem("@chosen_team").then(value => {
+        await AsyncStorage.getItem("@chosen_team").then((value) => {
           if (value) {
             let chosenTeam = JSON.parse(value);
             setchosenTeam(chosenTeam);
             if (Object.keys(chosenTeam).length > 0) {
               props.navigation.navigate("TeamScreen", {
-                team: chosenTeam,
-                cleanUp: cleanUp
+                screen: "TeamScreen",
+                params: {
+                  team: chosenTeam,
+                },
               });
             }
           }
@@ -38,7 +49,7 @@ const startScreen = props => {
     return () => {};
   }, []);
 
-  const chooseTeamHandler = async team => {
+  const chooseTeamHandler = async (team) => {
     try {
       await AsyncStorage.setItem("@chosen_team", JSON.stringify(team));
     } catch (e) {
@@ -47,8 +58,10 @@ const startScreen = props => {
     setchosenTeam(team);
     console.log("Navigating to teamScreen through chooseteamhandler");
     props.navigation.navigate("TeamScreen", {
-      team: team,
-      cleanUp: cleanUp
+      screen: "TeamScreen",
+      params: {
+        team: team,
+      },
     });
   };
 
@@ -63,8 +76,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
 
 export default startScreen;
