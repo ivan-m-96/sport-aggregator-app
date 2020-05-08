@@ -3,7 +3,7 @@ import { StyleSheet, View, Picker, Button } from "react-native";
 
 import { getCountries, getLeaguesByCountry, getTeams } from "../service/api";
 
-const chooser = props => {
+const chooser = (props) => {
   const [countries, setCountries] = useState([]);
   const [country, setcountry] = useState({});
   const [leagues, setleagues] = useState([]);
@@ -13,7 +13,9 @@ const chooser = props => {
 
   useEffect(() => {
     let mounted = true;
-    if (mounted) getCountries(setCountries);
+    if (mounted) {
+      getCountries(setCountries);
+    }
 
     return () => {
       mounted = false;
@@ -26,7 +28,7 @@ const chooser = props => {
         <Picker
           selectedValue={country}
           style={styles.picker}
-          onValueChange={itemValue => {
+          onValueChange={(itemValue) => {
             setcountry(itemValue);
             getLeaguesByCountry(itemValue.code, setleagues);
             console.log(leagues);
@@ -49,14 +51,14 @@ const chooser = props => {
         <View
           style={{
             width: 200,
-            height: 200
+            height: 200,
           }}
         >
           <View style={styles.pickerContainer}>
             <Picker
               selectedValue={league}
               style={styles.picker}
-              onValueChange={league => {
+              onValueChange={(league) => {
                 setleague(league);
                 getTeams(league.league_id, setteams);
               }}
@@ -78,7 +80,7 @@ const chooser = props => {
             <Picker
               selectedValue={team}
               style={styles.picker}
-              onValueChange={itemValue => {
+              onValueChange={(itemValue) => {
                 setteam(itemValue);
                 // getPlayers(itemValue.team_id, 2019, setplayers);
                 // getFixturesByTeam(itemValue.team_id, setfixtures);
@@ -119,31 +121,31 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   pickerContainer: {
     borderColor: "black",
     borderRadius: 0.1,
     borderWidth: 1,
-    borderStyle: "solid"
+    borderStyle: "solid",
   },
   picker: {
     height: 50,
     width: 200,
-    color: "black"
+    color: "black",
   },
   itemStyle: {
     textAlign: "center",
-    color: "red"
+    color: "red",
   },
   picture: {
     width: 100,
-    height: 100
+    height: 100,
   },
   buttonContainer: {
     width: 100,
-    height: 100
-  }
+    height: 100,
+  },
 });
 
 export default chooser;

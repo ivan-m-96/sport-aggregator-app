@@ -1,27 +1,57 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { getTeamStatistics, getLeaguesByTeam } from "../service/api";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { Linking } from "react-native";
 
-const SquadNews = ({ team, leagues, statistics }) => {
+const SquadNews = ({ news }) => {
+  useEffect(() => {
+    console.log("********************TEAMS BBC");
+    console.log(news);
+  }, []);
+  const handleClick = (url) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        console.log("Don't know how to open URI: " + url);
+      }
+    });
+  };
   return (
     <View style={styles.container}>
-      {leagues.map((league) => (
-        <Text key={league.league_id}>{league.name}</Text>
-      ))}
-      {/* {<Text>{statistics ? statistics.matchs : null}</Text>} */}
-      <Text>Goals against at home: {statistics.goals.goalsAgainst.home}</Text>
-      <Text>Goals against away: {statistics.goals.goalsAgainst.away}</Text>
-      <Text>Goals for at home: {statistics.goals.goalsFor.home}</Text>
-      <Text>Goals for away: {statistics.goals.goalsFor.away}</Text>
-
-      {/* <Text> {league.country}</Text> */}
+      <ScrollView>
+        {news.map((article, index) => {
+          return (
+            <TouchableOpacity
+              key={index}
+              style={styles.container_touchable}
+              onPress={() => {
+                handleClick(article.url);
+              }}
+            >
+              <Text style={styles.title}> {article.title}</Text>
+              <Text> {article.summary}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { alignItems: "center" },
+  container: { alignItems: "center", flex: 1 },
+  container_touchable: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 10,
+
+    borderBottomWidth: 1,
+  },
+  title: {
+    textShadowRadius: 10,
+  },
 });
 
 export default SquadNews;

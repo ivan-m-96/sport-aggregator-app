@@ -15,10 +15,17 @@ axios.interceptors.request.use((config) => {
  *
  */
 export const getCountries = async (callback) => {
-  await axios.get(URL_BASE + "/countries", { ...header }).then((res) => {
-    // console.log(res.data);
-    callback(res.data.api.countries);
-  });
+  await axios
+    .get(URL_BASE + "/countries", { ...header })
+    .then((res) => {
+      // console.log(res.data);
+      if (res?.data) {
+        callback(res.data.api.countries);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 /** Set's an array of leagues as a state via the provided setter
  * @param {*} code - country code provided by the api
@@ -63,6 +70,8 @@ export const getPlayers = async (teamId, season, callback) => {
  */
 export const getFixturesByTeam = async (teamId, callback) => {
   await axios.get(URL_BASE + "fixtures/team/" + teamId).then((res) => {
+    console.log("from getFixturesByTeam");
+    console.log(res.data.api.fixtures);
     callback(res.data.api.fixtures);
   });
 };

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { AsyncStorage } from "react-native";
 import Chooser from "./Chooser";
+import ChooserBBC from "./ChooserBBC";
 import { StyleSheet, View } from "react-native";
 import getCountries from "../service/api";
+import addTeamAction from "../actions";
 
 const startScreen = (props) => {
   const [chosenTeam, setchosenTeam] = useState({});
@@ -29,6 +32,7 @@ const startScreen = (props) => {
             let chosenTeam = JSON.parse(value);
             setchosenTeam(chosenTeam);
             if (Object.keys(chosenTeam).length > 0) {
+              props.dispatch(addTeamAction(chosenTeam));
               props.navigation.navigate("TeamScreen", {
                 screen: "TeamScreen",
                 params: {
@@ -57,6 +61,7 @@ const startScreen = (props) => {
     }
     setchosenTeam(team);
     console.log("Navigating to teamScreen through chooseteamhandler");
+    props.dispatch(addTeamAction(team));
     props.navigation.navigate("TeamScreen", {
       screen: "TeamScreen",
       params: {
@@ -67,7 +72,8 @@ const startScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <Chooser chooseTeamHandler={chooseTeamHandler}></Chooser>
+      {/* <Chooser chooseTeamHandler={chooseTeamHandler}></Chooser> */}
+      <ChooserBBC chooseTeamHandler={chooseTeamHandler}></ChooserBBC>
     </View>
   );
 };
@@ -80,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default startScreen;
+export default connect()(startScreen);

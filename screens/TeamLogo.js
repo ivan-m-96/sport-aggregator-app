@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, StyleSheet, View, Image } from "react-native";
 
-const TeamLogo = ({ team }) => {
+const TeamLogo = ({ team, uri }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -9,8 +9,7 @@ const TeamLogo = ({ team }) => {
           resizeMode="cover"
           style={styles.image}
           source={{
-            uri:
-              "https://media.api-football.com/teams/" + team.team_id + ".png",
+            uri,
           }}
         ></Image>
       </View>
@@ -21,8 +20,8 @@ const TeamLogo = ({ team }) => {
 
 const styles = StyleSheet.create({
   imageContainer: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
   },
   image: {
     flex: 1,
