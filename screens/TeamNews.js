@@ -1,8 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Button, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Linking } from "react-native";
+import {Card } from 'react-native-elements'
 
 const SquadNews = ({ news }) => {
   useEffect(() => {
@@ -20,19 +21,24 @@ const SquadNews = ({ news }) => {
   };
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView>  
         {news.map((article, index) => {
           return (
-            <TouchableOpacity
+            <Card
               key={index}
-              style={styles.container_touchable}
+              containerStyle={styles.container_touchable}
               onPress={() => {
                 handleClick(article.url);
               }}
+              image={article.img ? {uri:article.img} : ""}
+              imageProps={{}}
             >
               <Text style={styles.title}> {article.title}</Text>
               <Text> {article.summary}</Text>
-            </TouchableOpacity>
+              <Button title={"Read"} onPress={() => {
+                handleClick(article.url);
+              }}></Button>
+            </Card>
           );
         })}
       </ScrollView>
@@ -47,10 +53,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 10,
 
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
   },
   title: {
     textShadowRadius: 10,
+    marginBottom: 10
   },
 });
 

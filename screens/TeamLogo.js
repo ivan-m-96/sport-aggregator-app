@@ -13,7 +13,6 @@ const TeamLogo = ({ team, uri }) => {
           }}
         ></Image>
       </View>
-      <Text>{team.name}</Text>
     </View>
   );
 };

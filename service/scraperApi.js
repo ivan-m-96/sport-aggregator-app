@@ -65,7 +65,8 @@ export const getSquad = async (team, callback) => {
     .then((res) => {
       console.log("getSquad");
       console.log(res);
-      callback(res.data);
+      let data = res.data.filter((value) => Object.keys(value).length != 0);
+      callback(data);
     })
     .catch((err) => console.log(err));
 };

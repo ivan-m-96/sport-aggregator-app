@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { getSquad } from "../service/scraperApi";
 import Player from "../components/Player";
+import { FlatList } from "react-native-gesture-handler";
 const SquadScreen = ({ team }) => {
   const [squad, setsquad] = useState([]);
   useEffect(() => {
@@ -16,6 +17,7 @@ const SquadScreen = ({ team }) => {
         {squad?.map((player, i) => {
           return <Player key={i} player={player}></Player>;
         })}
+         
       </View>
     </ScrollView>
   );
@@ -23,11 +25,11 @@ const SquadScreen = ({ team }) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignContent: "center",
-    alignItems: "center",
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between",
+    // alignContent: "center",
+    // alignItems: "center",
+    // flex: 1,
+    // flexDirection: "column",
+    // justifyContent: "space-between",
   },
 });
 
