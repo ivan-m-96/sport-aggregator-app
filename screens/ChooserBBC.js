@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { Dimensions, ScrollView } from "react-native";
 import { AsyncStorage } from "react-native";
 import addTeamAction from "../actions";
-
+import { List } from "react-native-paper";
 import {
   StyleSheet,
   View,
@@ -19,7 +20,7 @@ const ChooserBBC = (props) => {
   const [league, setleague] = useState({});
   const [teams, setteams] = useState([]);
   const [team, setteam] = useState({});
-
+  const [expanded, setExpanded] = useState({});
   useEffect(() => {
     let mounted = true;
     if (mounted) {
@@ -41,11 +42,40 @@ const ChooserBBC = (props) => {
   const filterOutEmptyObjects = (objArray) => {
     return objArray.filter((value) => Object.keys(value).length != 0);
   };
+  const getSize = () => {
+    return {
+      width: Dimensions.get("window").width,
+      height: Dimensions.get("window").height,
+    };
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.pickerContainer}>
-        <Picker
+      <View style={[styles.pickerContainer, getSize()]}>
+        <List.Section title="Choose a team">
+          <ScrollView>
+            {leagues.map((league, index) => {
+              return (
+                <List.Accordion title={league.title} key={index}>
+                  {filterOutEmptyObjects(league.teams).map((team, index) => {
+                    return (
+                      <List.Item
+                        key={index}
+                        title={team.name}
+                        onPress={() => {
+                          console.log("Button press");
+                          props.chooseTeamHandler(team);
+                        }}
+                      ></List.Item>
+                    );
+                  })}
+                </List.Accordion>
+              );
+            })}
+          </ScrollView>
+        </List.Section>
+
+        {/* <Picker
           selectedValue={league}
           style={styles.picker}
           onValueChange={(itemValue) => {
@@ -96,7 +126,7 @@ const ChooserBBC = (props) => {
             console.log("Button press");
             props.chooseTeamHandler(team);
           }}
-        ></Button>
+        ></Button> */}
       </View>
     </View>
   );

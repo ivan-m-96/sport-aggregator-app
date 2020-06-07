@@ -34,7 +34,7 @@ const startScreen = (props) => {
             if (Object.keys(chosenTeam).length > 0) {
               props.dispatch(addTeamAction(chosenTeam));
               props.navigation.navigate("TeamScreen", {
-                screen: "TeamScreen",
+                screen: "News",
                 params: {
                   team: chosenTeam,
                 },
@@ -63,7 +63,7 @@ const startScreen = (props) => {
     console.log("Navigating to teamScreen through chooseteamhandler");
     props.dispatch(addTeamAction(team));
     props.navigation.navigate("TeamScreen", {
-      screen: "TeamScreen",
+      screen: "News",
       params: {
         team: team,
       },
@@ -80,6 +80,7 @@ const startScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",

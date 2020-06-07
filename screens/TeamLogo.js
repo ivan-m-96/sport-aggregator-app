@@ -6,7 +6,7 @@ const TeamLogo = ({ team, uri }) => {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          resizeMode="cover"
+          resizeMode="contain"
           style={styles.image}
           source={{
             uri,

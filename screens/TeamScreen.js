@@ -13,10 +13,11 @@ import TeamSquad from "./TeamSquad";
 import TeamLogo from "./TeamLogo";
 import SquadNews from "./TeamNews";
 import { getNewsBBC, getLogoAzure } from "../service/scraperApi";
+import { connect } from "react-redux";
 const TeamScreen = (props) => {
   const [news, setNews] = useState([]);
   const [logoUri, setLogoUri] = useState("");
-  const { team } = props.route.params;
+  const { team } = props;
 
   useEffect(() => {
     console.log("from effect league team");
@@ -29,10 +30,6 @@ const TeamScreen = (props) => {
     return () => {};
   }, []);
 
-  const cleanUp = () => {
-    props.navigation.navigate("Home", { props: { toCleanUp: true } });
-    console.log("Sent navigation and toCleanup");
-  };
   const getLogo = async () => {
     getLogoAzure(team.name, (data) => {
       console.log("logo uri:" + data);
@@ -64,12 +61,14 @@ const TeamScreen = (props) => {
       )}
 
       {Object.keys(news).length > 0 ? (
-        <SquadNews style={styles.news} news={news}></SquadNews>
+        <SquadNews
+          style={styles.news}
+          news={news}
+          navigation={props.navigation}
+        ></SquadNews>
       ) : (
         <ActivityIndicator></ActivityIndicator>
       )}
-
-      <Button onPress={cleanUp} title="CHANGE TEAM"></Button>
     </View>
   );
 };
@@ -89,4 +88,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TeamScreen;
+export default connect((state) => {
+  console.log("state object");
+  console.log(state.team);
+  return { team: state.team };
+})(TeamScreen);

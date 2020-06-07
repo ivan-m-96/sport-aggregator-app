@@ -35,7 +35,7 @@ export const getTeamsByLeagueBBC = async (league, callback) => {
 };
 export const getLogoAzure = async (team, callback) => {
   await axios
-    .get(URL_BASE + "getLogo/q=" + team)
+    .get(URL_BASE + "getLogo/" + team)
     .then((res) => {
       console.log("get logo");
       console.log(res);

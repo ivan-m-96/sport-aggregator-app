@@ -5,37 +5,40 @@ import {
   Text,
   Image,
   StyleSheet,
+  Linking,
 } from "react-native";
-import { ListItem } from 'react-native-elements'
+import { ListItem } from "react-native-elements";
 
-export default function Player({ player }) {
+export default function Player({ player, navigation }) {
+  const handleClick = async (url) => {
+    navigation.navigate("Player", {
+      player: player,
+      url: url,
+    });
+    // Linking.canOpenURL(url).then((supported) => {
+    //   if (supported) {
+    //     Linking.openURL(url);
+    //   } else {
+    //     console.log("Don't know how to open URI: " + url);
+    //   }
+    // });
+  };
+
   return (
-    <ListItem leftAvatar={{ source: { uri: player.img } }}
-    title={player.name}
-    subtitle={'(' +  player.number + ') ' + player.position }
-    rightTitle={player.marketValue}
-    rightAvatar={{source: {uri: player.countryImg}}}
-    bottomDivider></ListItem>
-    // <View style={styles.container}>
-    //   {player.img ? (
-    //     <Image
-    //       resizeMode="cover"
-    //       style={styles.image}
-    //       source={{ uri: player.img }}
-    //     ></Image>
-    //   ) : (
-    //     <Text></Text>
-    //   )}
-    //   <TouchableWithoutFeedback style={styles.info}>
-    //     <Text>
-    //       {player.name + " "}
-    //       {player.position + " "}
-    //       {player.dateOfBirth + " "}
-    //       {player.marketValue + " "}
-    //       {player.country + " "}
-    //     </Text>
-    //   </TouchableWithoutFeedback>
-    // </View>
+    <View>
+      <ListItem
+        leftAvatar={{ source: { uri: player.img } }}
+        title={player.name}
+        subtitle={"(" + player.number + ") " + player.position}
+        rightTitle={player.marketValue}
+        rightAvatar={{ source: { uri: player.countryImg }, size: "small" }}
+        bottomDivider
+        chevron
+        onPress={() => {
+          handleClick("https://transfermarkt.co.uk" + player.url);
+        }}
+      ></ListItem>
+    </View>
   );
 }
 

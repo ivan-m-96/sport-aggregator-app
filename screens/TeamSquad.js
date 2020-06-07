@@ -1,10 +1,15 @@
 import React, { Component, useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import { getSquad } from "../service/scraperApi";
 import Player from "../components/Player";
-import { FlatList } from "react-native-gesture-handler";
-const SquadScreen = ({ team }) => {
+const SquadScreen = ({ team, navigation }) => {
   const [squad, setsquad] = useState([]);
   useEffect(() => {
     getSquad(team.name, setsquad);
@@ -12,13 +17,17 @@ const SquadScreen = ({ team }) => {
   }, []);
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <Text> {team.name}</Text>
-        {squad?.map((player, i) => {
-          return <Player key={i} player={player}></Player>;
-        })}
-         
-      </View>
+      {Object.keys(squad).length > 0 ? (
+        <View style={styles.container}>
+          {squad?.map((player, i) => {
+            return (
+              <Player key={i} player={player} navigation={navigation}></Player>
+            );
+          })}
+        </View>
+      ) : (
+        <ActivityIndicator />
+      )}
     </ScrollView>
   );
 };

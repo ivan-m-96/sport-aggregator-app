@@ -1,43 +1,77 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Button, Image } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Linking } from "react-native";
-import {Card } from 'react-native-elements'
+import InAppBrowser from "react-native-inappbrowser-reborn";
+import { Card, Button } from "react-native-elements";
 
-const SquadNews = ({ news }) => {
+const SquadNews = ({ news, navigation }) => {
   useEffect(() => {
     console.log("********************TEAMS BBC");
     console.log(news);
   }, []);
-  const handleClick = (url) => {
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        Linking.openURL(url);
-      } else {
-        console.log("Don't know how to open URI: " + url);
-      }
+
+  const handleClick = async (url) => {
+    navigation.navigate("NewsArticle", {
+      url: url,
     });
+    // try {
+    //   if (await InAppBrowser.isAvailable()) {
+    //     const result = await InAppBrowser.open(url, {
+    //       // Android Properties
+    //       showTitle: true,
+    //       toolbarColor: "#6200EE",
+    //       secondaryToolbarColor: "black",
+    //       enableUrlBarHiding: true,
+    //       enableDefaultShare: true,
+    //       forceCloseOnRedirection: false,
+    //       // Specify full animation resource identifier(package:anim/name)
+    //       // or only resource name(in case of animation bundled with app).
+    //       animations: {
+    //         startEnter: "slide_in_right",
+    //         startExit: "slide_out_left",
+    //         endEnter: "slide_in_left",
+    //         endExit: "slide_out_right",
+    //       },
+    //       headers: {
+    //         "my-custom-header": "my custom header value",
+    //       },
+    //     });
+    //     // Alert.alert(JSON.stringify(result));
+    //   } else Linking.openURL(url);
+    // } catch (error) {
+    //   Alert.alert(error.message);
+    // }
   };
+
   return (
     <View style={styles.container}>
-      <ScrollView>  
+      <ScrollView>
         {news.map((article, index) => {
           return (
             <Card
               key={index}
-              containerStyle={styles.container_touchable}
+              containerStyle={styles.card}
               onPress={() => {
                 handleClick(article.url);
               }}
-              image={article.img ? {uri:article.img} : ""}
-              imageProps={{}}
+              image={article.img ? { uri: article.img } : ""}
+              imageProps={{
+                height: 200,
+                width: 200,
+              }}
             >
               <Text style={styles.title}> {article.title}</Text>
               <Text> {article.summary}</Text>
-              <Button title={"Read"} onPress={() => {
-                handleClick(article.url);
-              }}></Button>
+
+              <Button
+                title="Read"
+                type="outline"
+                onPress={() => {
+                  handleClick(article.url);
+                }}
+              ></Button>
             </Card>
           );
         })}
@@ -57,8 +91,9 @@ const styles = StyleSheet.create({
   },
   title: {
     textShadowRadius: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
+  card: {},
 });
 
 export default SquadNews;
